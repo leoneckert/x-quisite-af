@@ -1,0 +1,105 @@
+      body {
+        font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+        padding: 2%; 
+        margin: 0;
+        margin-left: auto;
+        margin-right: auto;
+      } 
+
+      #title{
+        /*position: relative;*/
+        font-family: 'Arvo', Georgia, Times, serif;
+        margin: auto;
+        /*width: 50%;*/
+        border: 3px dotted black;
+        /*padding: 10px;*/
+        text-align: center;
+      }
+      button{
+        color: #666;
+        background-color: #eee;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 9px;
+        font-weight: bold;
+        padding: 10px 12px;
+        border-radius: 5px;
+        text-align: center;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border: 1px solid rgba(0,0,0,0.3);
+        border-bottom-width: 3px;
+        margin: 1.5px;
+      }
+      button:hover{
+        background-color: #e3e3e3;
+        border-color: rgba(0,0,0,0.5);
+      }
+      #btn_next{
+        position: absolute;
+        right: 1.5%;
+        bottom: 1.5%;
+      }
+
+      #blank{
+        height: 20px;
+      }
+
+      .description{
+        position: relative;
+        float: left;
+        height:500px;
+        width: 200px;
+        background-color: #FFC0CB;
+        font-family: 'PT Sans', Helvetica, Arial, sans-serif; 
+        text-align: center;
+        margin-right: 5px; 
+        font-size: 120%;
+      }
+
+      canvas {
+        /*padding-top: 0;
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: 0;
+        margin-bottom: auto;
+        display: block;*/
+        position: relative;
+        float:left;
+        /*width: 1000px;*/
+        background-color: black;
+        margin-right: 0.5%;
+      } 
+
+      .paintingtools{
+        position: relative;
+        float:left;
+        /*background-color: black;*/
+        width:50px;
+        height: 500px;
+      } 
+
+      #result_container{
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+      }
+
+      #canvas_container{
+        margin-left: auto;
+        margin-right: auto;
+        width: 1050px;
+      }
+
+
+      .result_img_wrapper{
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #result_container img{
+        margin-left: 0.8%;
+        margin-right: 0.8%;
+      }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>X-QUISITE AF</title>
+    <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="drawing/style.css">
+
+
+    <script src="libraries/p5.js" type="text/javascript"></script>
+    <script src="libraries/p5.dom.js" type="text/javascript"></script>
+    <script src="libraries/p5.sound.js" type="text/javascript"></script>
+    <script src="drawing/sketch.js" type="text/javascript"></script>
+  
+
+
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">      
+        var socket = io.connect();
+      
+        var currentMode = "head";
+
+        socket.on('connect', function() {
+            console.log("Connected");
+        });
+
+        var drawingDone = function(){
+          console.log("saving canvas");
+          var image = document.getElementById("maincanvas").getElementsByTagName("canvas")[0].toDataURL()
+          
+          var data = {
+            "part": currentMode,
+            "image": image
+          }
+          socket.emit('imageDone', data);
+          nextCanvas();
+        }
+
+
+
+        socket.on('changeMode', function(data) {
+            currentMode = data;
+            console.log(currentMode);
+            if(currentMode == "output"){
+              document.getElementById("canvas_container").innerHTML = "";
+              document.getElementById("result_container").style.display = "block";
+            }else if (currentMode == "body"){
+              document.getElementById("instructions").innerHTML = "<br><br><br><br><br> Draw a <b>TORSO</b> <br><br> Connect your torso <br> to the top and bottom <br> points on the canvas";
+           }else if (currentMode == "leg"){
+              document.getElementById("instructions").innerHTML = "<br><br><br><br><br> Draw <b>LEGS</b> <br><br> Connect your legs <br> to the top points <br> on the canvas";
+            }
+        }); 
+
+
+        socket.on('output_images', function(data) {
+            console.log("got data!!!");
+            console.log(data);
+              
+            //  OWN DATA
+            var own_drawings = data["own"];
+            var own_name = Object.keys(own_drawings["heads"]);
+            document.getElementsByClassName("head")[0].getElementsByTagName("img")[0].src = own_drawings["heads"][own_name];
+            document.getElementsByClassName("body")[0].getElementsByTagName("img")[1].src = own_drawings["bodies"][own_name];
+            document.getElementsByClassName("legs")[0].getElementsByTagName("img")[2].src = own_drawings["legs"][own_name];
+
+            // OTHER DATA
+            var else_drawings = data["elses"];
+            console.log("else_drawings", else_drawings);
+            var creators = Object.keys(else_drawings["heads"]);
+            document.getElementsByClassName("head")[0].getElementsByTagName("img")[1].src = else_drawings["heads"][creators[0]]
+            document.getElementsByClassName("head")[0].getElementsByTagName("img")[2].src = else_drawings["heads"][creators[1]]
+            creators = Object.keys(else_drawings["bodies"]);
+            document.getElementsByClassName("body")[0].getElementsByTagName("img")[0].src = else_drawings["bodies"][creators[0]]
+            document.getElementsByClassName("body")[0].getElementsByTagName("img")[2].src = else_drawings["bodies"][creators[1]]
+            creators = Object.keys(else_drawings["legs"]);
+            document.getElementsByClassName("legs")[0].getElementsByTagName("img")[0].src = else_drawings["legs"][creators[0]]
+            document.getElementsByClassName("legs")[0].getElementsByTagName("img")[1].src = else_drawings["legs"][creators[1]]
+
+        });  
+    </script> 
+
+
+  </head>
+  <body>
+
+      <div id="title"><h2>X-QUISITE AF</h2></div>
+      <div id="blank"></div>
+
+      <div id="canvas_container">
+        <div class = "description">
+          <p id="instructions"><br><br><br><br><br> Draw a <b>HEAD</b> <br><br> Connect your head <br> to the bottom points <br> on the canvas</p>
+          <button type="button" id="btn_next" onclick="drawingDone();">next</button>
+        </div>
+        <div id="maincanvas"></div>
+        <div class = "paintingtools">
+          <button type="button" id="btn_pen">Pen</button>
+          <button type="button" id="btn_eraser">Eraser</button>
+        </div>
+      </div> 
+
+
+      <div style="display: none" id = "result_container">
+        <div class="head result_img_wrapper">
+          <img src="http://images.all-free-download.com/images/graphiclarge/plain_white_background_211387.jpg" alt="Mountain View" style="width:320px;height:200px;">
+          <img src="http://images.all-free-download.com/images/graphiclarge/plain_white_background_211387.jpg" alt="Mountain View" style="width:320px;height:200px;">
+          <img src="http://images.all-free-download.com/images/graphiclarge/plain_white_background_211387.jpg" alt="Mountain View" style="width:320px;height:200px;">
+        </div>
+
+        <div class="body result_img_wrapper">
+          <img src="http://images.all-free-download.com/images/graphiclarge/plain_white_background_211387.jpg" alt="Mountain View" style="width:320px;height:200px;">
+          <img src="http://i.giphy.com/u3ixOBgotIfMQ.gif" alt="LOADING" style="width:320px;height:200px;">
+          <img src="http://images.all-free-download.com/images/graphiclarge/plain_white_background_211387.jpg" alt="Mountain View" style="width:320px;height:200px;">
+        </div>
+
+        <div class="legs result_img_wrapper">
+          <img src="http://images.all-free-download.com/images/graphiclarge/plain_white_background_211387.jpg" alt="Mountain View" style="width:320px;height:200px;">
+          <img src="http://images.all-free-download.com/images/graphiclarge/plain_white_background_211387.jpg" alt="Mountain View" style="width:320px;height:200px;">
+          <img src="http://images.all-free-download.com/images/graphiclarge/plain_white_background_211387.jpg" alt="Mountain View" style="width:320px;height:200px;">
+        </div>
+      </div> 
+
+  </body>
+</html>
